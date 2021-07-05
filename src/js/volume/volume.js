@@ -8,6 +8,17 @@
 var papaya = papaya || {};
 papaya.volume = papaya.volume || {};
 
+function convertBytes(value) {
+    var temp = value;
+    var i = 0;
+    while (temp > 1024) {
+        temp /= 1024;
+        i++;
+    }
+    var dims = ['Bps', 'Kbps', 'Mbps', 'Gbps']
+    return (Math.round(temp * 100) / 100) + ' ' + dims[i];
+}
+
 
 /*** Constructor ***/
 papaya.volume.Volume = papaya.volume.Volume || function (progressMeter, dialogHandler, params) {
@@ -190,10 +201,11 @@ papaya.volume.Volume.prototype.loadURL = function (url, vol, index) {
         .fail(function (vol, err, xhr) {
             console.error(vol, err, xhr);
         })
-        .progress(function (loaded,total) {
+        .progress(function (loaded, total) {
             progPerc = parseInt(100 * (vol.loadedFileCount) / vol.urls.length, 10);
             progressText = papaya.volume.Volume.PROGRESS_LABEL_LOADING +
-                ' image ' + (vol.loadedFileCount + 1) + ' of ' + vol.urls.length + ' (' + progPerc + '%)';
+                ' ' + convertBytes(loaded) + ' of ' + convertBytes(total) +
+                ' (' + (Math.round((loaded / total) * 100)).toString() + '%)';
             vol.progressMeter.drawProgress(loaded / total, progressText);
         });
 

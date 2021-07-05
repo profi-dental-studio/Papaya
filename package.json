@@ -4,7 +4,7 @@
   "description": "A JavaScript medical image viewer.",
   "main": "src/js/main.js",
   "scripts": {
-    "build": "rm -rf ./build; mkdir ./build; ./papaya-builder.sh"
+    "build": "rm -rf ./build; mkdir ./build; ./papaya-builder.sh --atlas"
   },
   "repository": {
     "type": "git",
